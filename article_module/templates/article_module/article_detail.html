@@ -1,0 +1,226 @@
+{% extends 'shared/_layout.html' %}
+
+{% block title %} {{ article.title }} {% endblock %}
+
+
+{% block header %}
+    <header class="header">
+        <div class="header-middle">
+            <div class="container">
+                <div class="header-left mr-md-4">
+                    <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
+                    </a>
+                    <a href="demo-rtl.html" class="logo ml-lg-0">
+                        <img src="/static/assets/images/11112-transformed.png" alt="logo" width="190" height="55"/>
+                    </a>
+                    <form method="get" action="{% url 'search-result' %}"
+                          class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+                        <div class="search-border"></div>
+                        {{ search_form.query }}
+                        <button class="btn btn-search" type="submit"><i class="w-icon-search"></i></button>
+                    </form>
+                </div>
+                <div class="header-right ml-4">
+                </div> {% if user.is_authenticated %}
+                <a class="wishlist label-down link d-xs-show" href="{% url 'my_account' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">مشاهده حساب کاربری</span>
+                </a> {% else %} <a class="wishlist label-down link d-xs-show" href="{% url 'login_page' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">ورود به حساب کاربری</span>
+                </a> {% endif %} <a class="wishlist label-down link d-xs-show wish-count-main"
+                                    href="{% url 'my-favorites' %}">
+                <i class="w-icon-heart font-size-lg mb-1">
+                    <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_favorites|length }}</span>
+                </i>
+                <span class="wishlist-label d-lg-show fo-fa">علاقه‌مندی‌ها</span>
+            </a>
+                <a class="wishlist label-down link d-xs-show wish-count-main" href="{% url 'my-orders' %}">
+                    <i class="w-icon-cart font-size-lg mb-1 cart-count-icon">
+                        <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_orders|length }}</span>
+                    </i>
+                    <span class="wishlist-label d-lg-show fo-fa">سبد خرید</span>
+                </a>
+            </div>
+        </div>
+        </div>
+        </div>
+        <!-- End of Header Middle -->
+        <div class="header-bottom sticky-content fix-top sticky-header">
+            <div class="container" style="border-bottom: 1px solid #eee; margin-bottom: 20px">
+                <div class="inner-wrap">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown has-border" data-visible="true">
+                            <a href="#" class="category-toggle" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true" data-display="static"
+                               title="Browse Categories">
+                                <span>دسته‌بندی قالب‌ها</span>
+                            </a>
+                            <div class="dropdown-box">
+                                <ul class="menu vertical-menu category-menu"> {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product-categories-list' category.url_title %}">
+                                            <i class="{{ category.icon }}"
+                                               style='font-size:14.5px'></i>{{ category.title }}
+                                        </a>
+                                    </li> {% endfor %}
+                                    <li>
+                                        <a href="{% url 'product-list' %}"
+                                           class="font-weight-bold text-primary text-uppercase ls-25 ml-1 pt-3 pb-1">
+                                            مشاهده همه دسته‌بندی‌ها<i class="w-icon-angle-left ml-2"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <nav class="main-nav">
+                            <ul class="menu active-underline">
+                                <li class="active">
+                                    <a href="{% url 'home_page' %}">صفحه اصلی</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'product-list' %}">فروشگاه</a>
+                                </li>
+                                <li>
+                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <ul> {% for category, article_list in articles_in_article_categories %}
+                                        <li>
+                                            <a href="{% url 'article-categories-list' category.url_title %}"
+                                               class="fo-fa arti-home">{{ category.title }}</a>
+                                            <ul> {% for article in article_list %}
+                                                <li><a href="{% url 'article-detail' slug=article.slug %}"
+                                                       class="fo-fa arti-home">{{ article.title }}</a></li> {% endfor %}
+                                            </ul>
+                                        </li> {% endfor %} </ul>
+                                </li>
+                                <li>
+                                    <a href="#">خدمات طراحی سایت</a>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">سفارشی‌سازی Front End سایت</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">پیاده‌سازی Back End سایت</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">صفحات</a>
+                                    <ul>
+                                        <li><a href="{% url 'contact_us_page' %}" class="fo-fa arti-home">سوالی دارید؟
+                                            تماس با ما</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درخواست پشتیبانی</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درباره ما (داستان ما رو دنبال کن!)</a>
+                                        </li>
+                                        <li><a href="#" class="fo-fa arti-home">قوانین و شرایط سایت</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% url "register_page" %}">ایجاد حساب کاربری </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+    <div class="container text-center" style="margin: auto; max-width: 90%;">
+
+        <div class="main-content post-single-content">
+
+            <div class="banner banner-fixed overlay-light category-banner-1 br-xs mt-5">
+                <figure>
+                    <img src="{{ article.image.url }}" alt="Category Banner" width="610" height="200"
+                         style="background-color: #3B4B48; height: 35vh">
+                </figure>
+                <div class="banner-content y-50 pt-1 ml-7">
+
+                    <h3 class="banner-title font-weight-bolder text-capitalize text-white fo-fa">{{ article.title }}
+                        <br> <br>
+                        {% for category in article.category.all %}
+                            <a href="{% url 'article-categories-list' category=category.url_title %}"
+                               class="post-author fo-fa font-size-md text-white">دسته‌بندی: {{ category.title }}</a> {% endfor %}
+                    </h3>
+                    <a href="demo-rtl-shop.html" class="btn btn-white btn-link btn-underline btn-icon-left">مشاهده لیست
+                        سایر مقالات <i class="w-icon-long-arrow-left"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Article Title -->
+        <h3 class="mt-9 ml-2 pt-7 fo-fa t-align"><i
+                class="bi bi-pencil-square mr-1"></i> {{ article.short_description }}</h3>
+        <p class="mt-4 ml-2 t-align">
+            <i class="bi bi-calendar2-week mr-1"></i> {{ article.created_at }}
+        </p>
+
+
+        <!-- Display Article Author -->
+        {% if loaded_article.author %}
+            <p>Author: {{ article.author.username }}</p>
+        {% endif %}
+
+        <!-- Display Article Description -->
+        <p>{{ article.description|safe }}</p>
+
+        <div class="post-wrapper appear-animate mb-4">
+            <div class="title-link-wrapper pb-1 mb-4">
+                <h2 class="title ls-normal mb-0 ml-lg-2 fo-fa cat-home">آخرین مقالات </h2>
+                <a href="{% url 'article-list' %}"
+                   class="btn btn-link font-weight-bold font-size-normal ls-25 mb-0 fo-fa"> لیست همه مقالات </a>
+            </div>
+            <div class="swiper">
+                <div class="swiper-container swiper-theme" data-swiper-options="{
+                            'slidesPerView': 1,
+                            'spaceBetween': 20,
+                            'breakpoints': {
+                                '576': {
+                                    'slidesPerView': 2
+                                },
+                                '768': {
+                                    'slidesPerView': 3
+                                },
+                                '992': {
+                                    'slidesPerView': 4
+                                }
+                            }
+                        }">
+                    <div class="swiper-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-1">
+                        {% for group in latest_articles %}{% for article in group %}
+                            <div class="swiper-slide post text-center overlay-zoom">
+                                <figure class="post-media br-sm">
+                                    <a href="{% url 'article-detail' slug=article.slug %}">
+                                        <img src="{{ article.image.url }}" alt="Post"
+                                             style="background-color: #4b6e91; width: 280px; height: 180px; border-radius: 5px; margin: auto"/>
+                                    </a>
+                                </figure>
+                                <div class="post-details">
+                                    <div class="post-meta"> {% for category in article.category.all %}
+                                        <a href="{% url 'article-categories-list' category=category.url_title %}"
+                                           class="post-author fo-fa font-size-sm">دسته‌بندی: {{ category.title }}</a> {% endfor %}
+                                        <a class="post-date ml-0 fo-fa font-size-sm">
+                                            ({{ article.created_at|date:"F j, Y" }}) </a>
+                                    </div>
+                                    <h4 class="post-title fo-fa font-size-sm mt-1"><a
+                                            href="{% url 'article-detail' slug=article.slug %}">{{ article.title }}</a>
+                                    </h4>
+                                    <a href="{% url 'article-detail' slug=article.slug %}"
+                                       class="btn btn-link btn-dark btn-underline fo-fa font-size-sm">مشاهده مقاله <i
+                                            class="w-icon-long-arrow-left font-size-sm"></i></a>
+                                </div>
+                            </div> {% endfor %} {% endfor %} </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

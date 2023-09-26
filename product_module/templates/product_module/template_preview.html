@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <title>Template Preview</title>
+    {% include 'shared/header_references.html' %}
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Hide vertical scrollbar on the main site */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100vh; /* Adjust the height to fill the viewport */
+            border: none;
+            overflow: hidden; /* Hide horizontal and vertical scrollbars on the template site */
+        }
+
+        .header-pre {
+            background-color: #262626;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            height: 55px; /* Set the initial height of the header */
+        }
+
+        .logo-pre {
+            width: 33%;
+            padding-left: 1px;
+            padding-top: 1%;
+            padding-bottom: 1%;
+        }
+
+        .functions-pre {
+            display: flex;
+            gap: 10px;
+        }
+
+        .function-button {
+            padding: 5px 5px;
+            cursor: pointer;
+
+
+        }
+
+        .function-button i {
+            color: white;
+            font-size: 18px;
+
+        }
+
+        .function-button.active {
+            border-bottom: 2px solid #0dcaf0; /* Background color for active button */
+            border-radius: 10%;
+
+        }
+
+        /* Center the iframe horizontally */
+        .iframe-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .backg-temp {
+            background-color: #808080;
+        }
+
+        .ico-pre {
+            margin-right: 2%;
+        }
+
+        iframe {
+            transition: width 1s, height 1s;
+        }
+
+
+    </style>
+</head>
+<body class="backg-temp">
+<header class="header-pre">
+    <div class="logo textual pull-left">
+        <a href="#" title="Rappid_Web">
+            <img src="/static/assets/images/logo-rappidweb-white.png" alt="Rappid_Web" class="logo-pre">
+        </a>
+    </div>
+    <div class="functions-pre ico-pre">
+
+        <div class="function-button" data-mode="laptop" onclick="resizeTemplate('laptop')"><i class="fa fa-desktop"
+                                                                                              aria-hidden="true"></i>
+        </div>
+        <div class="function-button" data-mode="tablet" onclick="resizeTemplate('tablet')"><i class="fa fa-tablet"
+                                                                                              aria-hidden="true"></i>
+        </div>
+        <div class="function-button" data-mode="mobile" onclick="resizeTemplate('mobile')"><i class="fa fa-mobile"
+                                                                                              aria-hidden="true"></i>
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary btn-cart"
+                    style="font-size: 12px; padding: 10px 15px; border-radius: 5px; color: white; background-color: black; margin-left: 9%">
+                <span class="fo-fa">افزودن به سبد خرید</span><i class="w-icon-cart" style="padding-left: 5px"></i>
+
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Center the iframe horizontally -->
+<div class="iframe-container">
+    <!-- Render the HTML content for the template using the iframe -->
+    <iframe id="templateFrame" src="{{ template_url }}"></iframe>
+</div>
+
+<script>
+    function resizeTemplate(mode) {
+        var iframe = document.getElementById('templateFrame');
+
+        switch (mode) {
+            case 'laptop':
+                resizeIframe('100%', '100vh');
+                break;
+            case 'tablet':
+                resizeIframe('1024px', '100vh');
+                break;
+            case 'mobile':
+                resizeIframe('375px', '100vh');
+                break;
+        }
+
+        // Remove the "active" class from all buttons
+        var buttons = document.getElementsByClassName('function-button');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+
+        // Add the "active" class to the clicked button
+        var clickedButton = document.querySelector(`.function-button[data-mode='${mode}']`);
+        if (clickedButton) {
+            clickedButton.classList.add('active');
+        }
+    }
+
+    function resizeIframe(width, height) {
+        var iframe = document.getElementById('templateFrame');
+        iframe.style.width = width;
+        iframe.style.height = height;
+    }
+
+    function resizeIframeSmoothly(iframe, width, height) {
+        // Set the initial size
+        iframe.style.width = iframe.clientWidth + 'px';
+        iframe.style.height = iframe.clientHeight + 'px';
+
+        // Allow the DOM to update before applying new size
+        setTimeout(function () {
+            // Apply the new size to trigger the transition
+            iframe.style.width = width;
+            iframe.style.height = height;
+        }, 10);
+    }
+
+    resizeTemplate('laptop');
+</script>
+
+{% include 'shared/footer_references.html' %}
+</body>
+</html>

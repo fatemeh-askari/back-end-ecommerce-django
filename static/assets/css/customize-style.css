@@ -1,0 +1,26 @@
+
+
+@font-face {
+  font-family: iransans;
+  src:  url(/static/assets/fonts/iransans/woff/IRANSans.woff2) format('woff2'),
+  url(/static/assets/fonts/iransans/woff/IRANSansWeb.woff) format("woff")
+}
+
+/*@font-face {*/
+/*  font-family: "vazir-fa";*/
+/*  src:*/
+/*    url(/static/assets/fonts/vazir/Farsi-Digits-Without-Latin/Vazir-Bold-FD-WOL.woff2)*/
+/*      format("woff2"),*/
+/*    url(/static/assets/fonts/vazir/Farsi-Digits-Without-Latin/Vazir-Medium-FD-WOL.woff)*/
+/*      format("woff"),*/
+/*    url(/static/assets/fonts/vazir/Vazir-Light.woff2) format("woff2"),*/
+/*    url(/static/assets/fonts/vazir/Vazir-Light.woff) format("woff");*/
+/*}*/
+
+body {
+  font-family: iransans , sans-serif;
+  text-align: justify;
+}
+
+
+

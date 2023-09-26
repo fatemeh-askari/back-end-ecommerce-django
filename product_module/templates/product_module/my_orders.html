@@ -1,0 +1,209 @@
+{% extends 'shared/_layout.html' %}
+
+{% block title %}سفارشات{% endblock %}
+
+{% block header %}
+    <header class="header">
+        <div class="header-middle">
+            <div class="container">
+                <div class="header-left mr-md-4">
+                    <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
+                    </a>
+                    <a href="demo-rtl.html" class="logo ml-lg-0">
+                        <img src="/static/assets/images/11112-transformed.png" alt="logo" width="190" height="55"/>
+                    </a>
+                    <form method="get" action="{% url 'search-result' %}"
+                          class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+                        <div class="search-border"></div>
+                        {{ search_form.query }}
+                        <button class="btn btn-search" type="submit"><i class="w-icon-search"></i></button>
+                    </form>
+                </div>
+                <div class="header-right ml-4">
+                </div> {% if user.is_authenticated %}
+                <a class="wishlist label-down link d-xs-show" href="{% url 'my_account' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">مشاهده حساب کاربری</span>
+                </a> {% else %} <a class="wishlist label-down link d-xs-show" href="{% url 'login_page' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">ورود به حساب کاربری</span>
+                </a> {% endif %} <a class="wishlist label-down link d-xs-show wish-count-main"
+                                    href="{% url 'my-favorites' %}">
+                <i class="w-icon-heart font-size-lg mb-1">
+                    <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_favorites|length }}</span>
+                </i>
+                <span class="wishlist-label d-lg-show fo-fa">علاقه‌مندی‌ها</span>
+            </a>
+                <a class="wishlist label-down link d-xs-show wish-count-main" href="{% url 'my-orders' %}">
+                    <i class="w-icon-cart font-size-lg mb-1 cart-count-icon">
+                        <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_orders|length }}</span>
+                    </i>
+                    <span class="wishlist-label d-lg-show fo-fa">سبد خرید</span>
+                </a>
+            </div>
+        </div>
+        </div>
+        </div>
+        <!-- End of Header Middle -->
+        <div class="header-bottom sticky-content fix-top sticky-header">
+            <div class="container" style="border-bottom: 1px solid #eee; margin-bottom: 20px">
+                <div class="inner-wrap">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown has-border" data-visible="true">
+                            <a href="#" class="category-toggle" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true" data-display="static"
+                               title="Browse Categories">
+                                <span>دسته‌بندی قالب‌ها</span>
+                            </a>
+                            <div class="dropdown-box">
+                                <ul class="menu vertical-menu category-menu"> {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product-categories-list' category.url_title %}">
+                                            <i class="{{ category.icon }}"
+                                               style='font-size:14.5px'></i>{{ category.title }}
+                                        </a>
+                                    </li> {% endfor %}
+                                    <li>
+                                        <a href="{% url 'product-list' %}"
+                                           class="font-weight-bold text-primary text-uppercase ls-25 ml-1 pt-3 pb-1">
+                                            مشاهده همه دسته‌بندی‌ها<i class="w-icon-angle-left ml-2"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <nav class="main-nav">
+                            <ul class="menu active-underline">
+                                <li class="active">
+                                    <a href="{% url 'home_page' %}">صفحه اصلی</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'product-list' %}">فروشگاه</a>
+                                </li>
+                                <li>
+                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <ul> {% for category, article_list in articles_in_article_categories %}
+                                        <li>
+                                            <a href="{% url 'article-categories-list' category.url_title %}"
+                                               class="fo-fa arti-home">{{ category.title }}</a>
+                                            <ul> {% for article in article_list %}
+                                                <li><a href="{% url 'article-detail' slug=article.slug %}"
+                                                       class="fo-fa arti-home">{{ article.title }}</a></li> {% endfor %}
+                                            </ul>
+                                        </li> {% endfor %} </ul>
+                                </li>
+                                <li>
+                                    <a href="#">خدمات طراحی سایت</a>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">سفارشی‌سازی Front End سایت</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">پیاده‌سازی Back End سایت</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">صفحات</a>
+                                    <ul>
+                                        <li><a href="#" class="fo-fa arti-home">سوالی دارید؟ تماس با ما</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درخواست پشتیبانی</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درباره ما (داستان ما رو دنبال کن!)</a>
+                                        </li>
+                                        <li><a href="#" class="fo-fa arti-home">قوانین و شرایط سایت</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% url "register_page" %}">ایجاد حساب کاربری </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-5 mb-5" style="max-width: 90%">
+        <div class="row">
+            <h1 class="fo-fa tit-fav">لیست سفارش های من</h1>
+
+        </div>
+    </div>
+
+
+
+    <div class="table__container">
+        <table class="table">
+            <tr>
+                <th>تصویر قالب</th>
+                <th>نام قالب</th>
+                <th>قیمت</th>
+                <th>حذف از سبد</th>
+            </tr>
+
+            {% for product in order_products %}
+
+                <tr>
+                    <td>
+                        <a href="{% url 'product-detail' slug=product.slug %}">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="table__img">
+                        </a>
+
+                    </td>
+
+                    <td>
+                        <a href="{% url 'product-detail' slug=product.slug %}">
+                            <h3 class="table__title">{{ product.title }}</h3>
+                        </a>
+                    </td>
+
+                    <td>
+                        <span class="table__price product-price fo-fa list-price">{{ product.price }}&nbsp;تومان</span>
+                    </td>
+
+
+                    <td>
+                        <form action="{% url 'product-order' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ product.id }}" name="product_order_id">
+                            <button type="submit" class="remove-order"><i class="bi bi-trash3"></i></button>
+                        </form>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+
+        </table>
+    </div>
+
+    <div>
+        <div class="container mt-4 mb-5 total-calc">
+            <p class="total-price fo-fa"><i class="bi bi-layout-text-window-reverse mr-1"></i>
+                قیمت کل سبد خرید: <span>{{ total_price }}</span> تومان
+            </p>
+        </div>
+    </div>
+
+    <div class="cart__actions">
+        <a href="" class="btn flex btn--md action-order">
+            <i class="bi bi-bag-check"></i> بازگشت به فروشگاه
+        </a>
+
+        <form action="{% url 'finalize-payment' %}" method="get">
+            <button type="submit" class="btn btn-outline-primary flex btn--md action-order"><i
+                    class="bi bi-credit-card"></i> نهایی کردن سبد خرید
+            </button>
+        </form>
+    </div>
+
+
+{% endblock %}
+
+
+
+

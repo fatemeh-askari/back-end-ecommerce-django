@@ -1,0 +1,1104 @@
+{% extends 'shared/_layout.html' %}
+{% load poll_extras %}
+
+
+{% block title %} {{ product.title }} {% endblock %}
+
+{% block header %}
+    <header class="header">
+        <div class="header-middle">
+            <div class="container">
+                <div class="header-left mr-md-4">
+                    <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
+                    </a>
+                    <a href="demo-rtl.html" class="logo ml-lg-0">
+                        <img src="/static/assets/images/11112-transformed.png" alt="logo" width="190" height="55"/>
+                    </a>
+                    <form method="get" action="{% url 'search-result' %}"
+                          class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+                        <div class="search-border"></div>
+                        {{ search_form.query }}
+                        <button class="btn btn-search" type="submit"><i class="w-icon-search"></i></button>
+                    </form>
+                </div>
+                <div class="header-right ml-4">
+                </div> {% if user.is_authenticated %}
+                <a class="wishlist label-down link d-xs-show" href="{% url 'my_account' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">مشاهده حساب کاربری</span>
+                </a> {% else %} <a class="wishlist label-down link d-xs-show" href="{% url 'login_page' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">ورود به حساب کاربری</span>
+                </a> {% endif %} <a class="wishlist label-down link d-xs-show wish-count-main"
+                                    href="{% url 'my-favorites' %}">
+                <i class="w-icon-heart font-size-lg mb-1">
+                    <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_favorites|length }}</span>
+                </i>
+                <span class="wishlist-label d-lg-show fo-fa">علاقه‌مندی‌ها</span>
+            </a>
+                <a class="wishlist label-down link d-xs-show wish-count-main" href="{% url 'my-orders' %}">
+                    <i class="w-icon-cart font-size-lg mb-1 cart-count-icon">
+                        <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_orders|length }}</span>
+                    </i>
+                    <span class="wishlist-label d-lg-show fo-fa">سبد خرید</span>
+                </a>
+            </div>
+        </div>
+        </div>
+        </div>
+        <!-- End of Header Middle -->
+        <div class="header-bottom sticky-content fix-top sticky-header">
+            <div class="container" style="border-bottom: 1px solid #eee; margin-bottom: 20px">
+                <div class="inner-wrap">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown has-border" data-visible="true">
+                            <a href="#" class="category-toggle" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true" data-display="static"
+                               title="Browse Categories">
+                                <span>دسته‌بندی قالب‌ها</span>
+                            </a>
+                            <div class="dropdown-box">
+                                <ul class="menu vertical-menu category-menu"> {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product-categories-list' category.url_title %}">
+                                            <i class="{{ category.icon }}"
+                                               style='font-size:14.5px'></i>{{ category.title }}
+                                        </a>
+                                    </li> {% endfor %}
+                                    <li>
+                                        <a href="{% url 'product-list' %}"
+                                           class="font-weight-bold text-primary text-uppercase ls-25 ml-1 pt-3 pb-1">
+                                            مشاهده همه دسته‌بندی‌ها<i class="w-icon-angle-left ml-2"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <nav class="main-nav">
+                            <ul class="menu active-underline">
+                                <li class="active">
+                                    <a href="{% url 'home_page' %}">صفحه اصلی</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'product-list' %}">فروشگاه</a>
+                                </li>
+                                <li>
+                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <ul> {% for category, article_list in articles_in_article_categories %}
+                                        <li>
+                                            <a href="{% url 'article-categories-list' category.url_title %}"
+                                               class="fo-fa arti-home">{{ category.title }}</a>
+                                            <ul> {% for article in article_list %}
+                                                <li><a href="{% url 'article-detail' slug=article.slug %}"
+                                                       class="fo-fa arti-home">{{ article.title }}</a></li> {% endfor %}
+                                            </ul>
+                                        </li> {% endfor %} </ul>
+                                </li>
+                                <li>
+                                    <a href="#">خدمات طراحی سایت</a>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">سفارشی‌سازی Front End سایت</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">پیاده‌سازی Back End سایت</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">صفحات</a>
+                                    <ul>
+                                        <li><a href="#" class="fo-fa arti-home">سوالی دارید؟ تماس با ما</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درخواست پشتیبانی</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درباره ما (داستان ما رو دنبال کن!)</a>
+                                        </li>
+                                        <li><a href="#" class="fo-fa arti-home">قوانین و شرایط سایت</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% url "register_page" %}">ایجاد حساب کاربری </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+
+
+
+{% block content %}
+    <!-- Start of Main -->
+    <main class="main mb-10 pb-1">
+
+        <!-- Start of Page Content -->
+        <div class="page-content">
+            <div class="container">
+                <div class="row gutter-lg">
+                    <div class="main-content">
+                        <div class="product product-single row">
+                            <div class="col-md-6 mb-6">
+                                <div class="product-gallery product-gallery-sticky">
+                                    <div class="swiper-container product-single-swiper swiper-theme nav-inner"
+                                         data-swiper-options="{
+                                            'navigation': {
+                                                'nextEl': '.swiper-button-next',
+                                                'prevEl': '.swiper-button-prev'
+                                            }
+                                        }">
+                                        <div class="swiper-wrapper row cols-1 gutter-no">
+                                            <div class="swiper-slide">
+                                                <figure class="product-image">
+                                                    <img class="img-swiper2" src="{{ product.image.url }}"
+                                                         data-zoom-image="/static/assets/images/products/default/1-800x900.jpg"
+                                                         alt="Electronics Black Wrist Watch" width="800"
+                                                         height="900">
+                                                </figure>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <figure class="product-image">
+                                                    <img class="img-swiper2" src="{{ product.image2.url }}"
+                                                         data-zoom-image="/static/assets/images/products/default/2-800x900.jpg"
+                                                         alt="Electronics Black Wrist Watch" width="488"
+                                                         height="549">
+                                                </figure>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <figure class="product-image">
+                                                    <img class="img-swiper2" src="{{ product.image3.url }}"
+                                                         data-zoom-image="/static/assets/images/products/default/3-800x900.jpg"
+                                                         alt="Electronics Black Wrist Watch" width="800"
+                                                         height="900">
+                                                </figure>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <figure class="product-image">
+                                                    <img class="img-swiper2" src="{{ product.image4.url }}"
+                                                         data-zoom-image="/static/assets/images/products/default/4-800x900.jpg"
+                                                         alt="Electronics Black Wrist Watch" width="800"
+                                                         height="900">
+                                                </figure>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <figure class="product-image">
+                                                    <img class="img-swiper2" src="{{ product.image5.url }}"
+                                                         data-zoom-image="/static/assets/images/products/default/5-800x900.jpg"
+                                                         alt="Electronics Black Wrist Watch" width="800"
+                                                         height="900">
+                                                </figure>
+                                            </div>
+
+                                        </div>
+                                        <button class="swiper-button-next"></button>
+                                        <button class="swiper-button-prev"></button>
+                                        <a href="#" class="product-gallery-btn product-image-full"><i
+                                                class="w-icon-zoom"></i></a>
+                                    </div>
+                                    <div class="product-thumbs-wrap swiper-container" data-swiper-options="{
+                                            'navigation': {
+                                                'nextEl': '.swiper-button-next',
+                                                'prevEl': '.swiper-button-prev'
+                                            }
+                                        }">
+                                        <div class="product-thumbs swiper-wrapper row cols-4 gutter-sm">
+                                            <div class="product-thumb swiper-slide">
+                                                <img src="{{ product.image.url }}" class="img-galery2"
+                                                     alt="Product Thumb" width="800" height="900">
+                                            </div>
+                                            <div class="product-thumb swiper-slide">
+                                                <img src="{{ product.image2.url }}" class="img-galery2"
+                                                     alt="Product Thumb" width="800" height="900">
+                                            </div>
+                                            <div class="product-thumb swiper-slide">
+                                                <img src="{{ product.image3.url }}" class="img-galery2"
+                                                     alt="Product Thumb" width="800" height="900">
+                                            </div>
+                                            <div class="product-thumb swiper-slide">
+                                                <img src="{{ product.image4.url }}" class="img-galery2"
+                                                     alt="Product Thumb" width="800" height="900">
+                                            </div>
+                                            <div class="product-thumb swiper-slide">
+                                                <img src="{{ product.image5.url }}" class="img-galery2"
+                                                     alt="Product Thumb" width="800" height="900">
+                                            </div>
+                                        </div>
+                                        <button class="swiper-button-next"></button>
+                                        <button class="swiper-button-prev"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 mb-md-6">
+                                <div class="product-details" data-sticky-options="{'minWidth': 767}">
+                                    <h2 class="product-title fo-fa"
+                                        style="font-size: 2rem; margin: 1.7rem auto">{{ product.title }}</h2>
+                                    <div class="product-bm-wrapper">
+                                        <div class="product-meta">
+                                            <div class="product-categories fo-fa">
+                                                دسته بندی &nbsp: &nbsp
+                                                <span class="product-category">
+                                                        {% for category in product.category.all %}
+                                                            <a href="#"> {{ category.title }}</a>
+                                                        {% endfor %}
+                                                    </span>
+                                            </div>
+                                            <div class="product-sku fo-fa">
+                                                شناسه : <span> {{ product.id }} &nbsp tmsa</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="product-divider">
+
+                                    <div class="product-price">
+                                        {% if product.is_free %}
+                                            <span class="new-price fo-fa list-price mb-2 font-size-lg">&nbsp رایگان</span>
+                                        {% else %}
+                                            {% if product.discount %}
+                                                <ins class="new-price letter-spc fo-fa list-price font-size-lg"
+                                                     style="text-decoration: line-through">{{ product.price | three_digits_currency }}</ins>
+                                                <ins class="new-price letter-spc fo-fa list-price font-size-lg">{{ product.new_price | three_digits_currency }}</ins>
+                                                <span class="new-price fo-fa list-price font-size-lg">&nbsp تومان</span>
+                                            {% else %}
+                                                <ins class="new-price letter-spc fo-fa list-price">{{ product.price | three_digits_currency }}</ins>
+                                                <span class="new-price fo-fa list-price ">&nbsp تومان</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings"
+                                                  style="width: {{ product.average_rating|floatformat:"0" }}%;"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="#" class="rating-reviews fo-fa"> (از {{ product.number_rating }}
+                                            رای)</a>
+                                    </div>
+
+                                    <div class="product-short-desc">
+                                        <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                            &nbsp {{ product.short_description }} </label>
+                                        <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                            &nbsp {{ product.short_description2 }} </label>
+                                        <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                            &nbsp {{ product.short_description3 }} </label>
+                                        <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                            &nbsp {{ product.short_description4 }} </label>
+                                        <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                            &nbsp {{ product.short_description5 }} </label>
+                                    </div>
+
+                                    <hr class="product-divider">
+
+                                    <div class="container">
+                                        <form action="{% url 'product-order' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ product.id }}" name="product_order_id">
+                                            <button type="submit" style=" width:100%; margin:auto;"
+                                                    class="btn btn-primary btn-pre mb-2">
+                                                {% if request.GET.is_order == 'True' %}
+                                                    <!-- Icon for product in cart -->
+                                                    <span class="fo-fa ml-1">حذف از سبد خرید</span>
+                                                {% else %}
+                                                    <!-- Icon for product not in cart -->
+                                                    <span class="fo-fa ml-1">افزودن به سبد خرید</span>
+                                                {% endif %}
+
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <div>
+                                        <div class="product-form container">
+                                            <a href="{% url 'template_preview' product_id=product.id %}"
+                                               class="btn-pre">
+                                                <button class="btn btn-primary btn-pre">
+                                                    <i class="w-icon-electronics"></i>
+                                                    <span class="fo-fa text-white ml-2">پیش نمایش آنلاین</span>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="social-links-wrapper" style="padding-right: 20px">
+                                        <div class="social-links">
+                                            <div class="social-icons social-no-color border-thin">
+                                                <a href="#" class="social-icon social-twitter w-icon-twitter"></a>
+                                                <a href="#"
+                                                   class="social-icon social-pinterest fab fa-pinterest-p"></a>
+                                                <a href="#" class="social-icon social-whatsapp fab fa-whatsapp"></a>
+                                                <a href="#"
+                                                   class="social-icon social-youtube fab fa-linkedin-in"></a>
+                                            </div>
+                                        </div>
+                                        <span class="divider d-xs-show"></span>
+
+                                        <div class="product-link-wrapper d-flex">
+
+                                            <form action="{% url 'product-favorite' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ product.id }}" name="product_fav_id">
+                                                <button type="submit"
+                                                        style="border: none; padding-top: 4px; background-color: transparent;">
+                                                    {% if is_favorite %}
+                                                        <i class="bi bi-suit-heart-fill"
+                                                           style="font-size: 20px; padding-top: 15px; color: #336699"></i>
+                                                    {% else %}
+                                                        <i class="bi bi-suit-heart"
+                                                           style="font-size: 20px; padding-top: 15px;"></i>
+                                                    {% endif %}
+                                                </button>
+                                            </form>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab tab-nav-boxed tab-nav-underline product-tabs mt-5">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a href="#product-tab-description" class="nav-link active fo-fa"
+                                       style="font-size:1.8rem">جزئیات قالب</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#product-tab-specification" class="nav-link fo-fa"
+                                       style="font-size:1.8rem">به‌روزرسانی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#product-tab-vendor" class="nav-link fo-fa" style="font-size:1.8rem">پشتیبانی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#product-tab-reviews" class="nav-link fo-fa" style="font-size: 1.8rem">
+                                        نظرات کاربران ({{ product_comments.count }})
+                                        <!-- Display the total comments count -->
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="product-tab-description">
+                                    <div class="row mb-4">
+                                        <div class="col-md-12 mb-5">
+                                            <p class="mb-4 fo-fa">{{ product.description }}</p>
+                                            <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                                &nbsp {{ product.short_description }} </label>
+                                            <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                                &nbsp {{ product.short_description2 }} </label>
+                                            <label class="mb-1 fo-fa desc"><i class="bi bi-check-square"></i>
+                                                &nbsp {{ product.short_description3 }} </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="product-tab-specification">
+                                    <ul class="list-none fo-fa">
+                                        <li>
+                                            <label>ورژن:</label>
+                                            <p>{{ product.version }}</p>
+                                        </li>
+                                        <li>
+                                            <label>آخرین به‌روزرسانی:</label>
+                                            <p>{{ product.update_date }}</p>
+                                        </li>
+                                        <li>
+                                            <label>تاریخ انتشار:</label>
+                                            <p>{{ product.publish_date }}</p>
+                                        </li>
+                                        <li>
+                                            <label>دسته بندی موضوعی: </label>
+                                            {% for category in product.category.all %}
+                                                <p>{{ category.title }}</p>
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane" id="product-tab-vendor">
+                                    <div class="row mb-3">
+                                        <div class="col-md-5 mb-4">
+
+
+                                            <figure class="vendor-banner br-sm ml-1 pl-5">
+                                                <img src="/static/assets/images/support%20service%20icon%20circle_5282398.png"
+                                                     alt="Support Banner"
+                                                     style="background-color: white; width:310px; height: 180px"/>
+                                            </figure>
+                                        </div>
+                                        <div class="col-md-7 pl-2 pl-md-6 mb-4">
+                                            <div class="vendor-user">
+
+                                                <div>
+                                                    <div class="vendor-name mt-4"><a>ارتباط با تیم پشتیبانی</a></div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings-full">
+                                                            <span class="ratings" style="width: 90%;"></span>
+                                                            <span class="tooltiptext tooltip-top"></span>
+                                                        </div>
+                                                        <a class="rating-reviews font-size-sm">(64 نظرسنجی، میزان رضایت
+                                                            90 % از پاسخگویی تیم پشتیبانی)</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul class="vendor-info list-style-none">
+                                                <li class="store-name">
+                                                    {#                                                        <label>Store Name:</label>#}
+                                                    <span class="detail font-size-sm mr-4">قالب‌ها و ایفکت‌ها قبل از قرار داده شدن در سایت، بررسی می‌گردند. با این وجود، در صورت بروز ایرادات امنیتی و خطا می‌توانید از طریق ارسال تیکت پیگیری نمایید؛ اما در مورد سفارشی سازی و ویرایش قالب مسئولیتی بر عهده طراح نیست.</span>
+                                                </li>
+                                                <li class="store-address">
+
+                                                    <span class="detail">پاسخگویی و پیگیری سریع به درخواست های شما</span>
+                                                </li>
+                                            </ul>
+                                            <a href="{% url 'support' %}"
+                                               class="btn btn-dark btn-link btn-underline btn-icon-right">ارسال تیکت <i
+                                                    class="w-icon-long-arrow-left"></i></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane" id="product-tab-reviews">
+                                    <div class="row mb-4">
+                                        <div class="col-xl-4 col-lg-5 mb-4">
+                                            <div class="ratings-wrapper">
+                                                <div class="avg-rating-container">
+                                                    <h4 class="avg-mark font-weight-bolder ls-50">{{ product.average_rating|floatformat:"0" }}</h4>
+                                                    <div class="avg-rating">
+                                                        <p class="text-dark mb-1 font-size-sm">میانگین امتیازات</p>
+                                                        <div class="ratings-container">
+                                                            <div>
+                                                                <div class="ratings-full mb-2">
+                                                                    <span class="ratings"
+                                                                          style="width: {{ product.average_rating|floatformat:"0" }}%;"></span>
+                                                                    <span class="tooltiptext tooltip-top"></span>
+                                                                </div>
+                                                                <a href="#" class="rating-reviews">(از حداکثر امتیاز
+                                                                    100)</a></div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                        class="ratings-value d-flex align-items-center text-dark ls-25 mt-5">
+                                                        <span
+                                                                class="text-dark font-weight-bold">{{ product.total_ratings|floatformat:"0" }}%</span>سطح
+                                                    رضایت کاربران<span
+                                                        class="count"> (از  {{ product.number_rating }}  رای)</span>
+                                                </div>
+                                                <div class="ratings-list">
+
+                                                    <div class="ratings-container">
+
+                                                        <div class="progress-bar progress-bar-sm">
+                                                            <span></span>
+                                                        </div>
+                                                        <div class="progress-value">
+                                                            <mark> {{ product.total_ratings|floatformat:"0" }}%</mark>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-8 col-lg-7 mb-4">
+                                            <div class="review-form-wrapper">
+                                                <h3 class="title tab-pane-title font-weight-bold mb-1 fo-fa fo-size">
+                                                    نظرات یا پرسش‌های خودتون رو در مورد قالب فوق، با ما در میان
+                                                    بگذارید. </h3>
+                                                <p class="mb-0 font-size-sm mt-4"> * آدرس ایمیل شما به اشتراک گذاشته
+                                                    نمیشه، لطفا همه فیلدهای زیر رو تکمیل کنید. </p>
+
+
+                                                <form action="{% url 'product-detail' slug=object.slug %}" method="POST"
+                                                      class="review-form">
+                                                    {% csrf_token %}
+
+                                                    <textarea cols="30" rows="5" placeholder="Text ..."
+                                                              class="form-control fp-fa"
+                                                              name="review" required></textarea>
+                                                    <div class="row gutter-md">
+                                                        <div class="col-md-6">
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="Your Name" name="name" required>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <input type="email" class="form-control"
+                                                                   placeholder="Your Email" name="email" required>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-dark" name="review_submit">
+                                                        ارسال نظر
+                                                    </button>
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab tab-nav-boxed tab-nav-outline tab-nav-center">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="show-all">
+                                                <ul class="comments list-style-none">
+
+                                                    {% for comment in product_comments %}
+                                                        <li class="comment">
+                                                            <div class="comment-body" style="border: 2px solid #DCDCDC">
+                                                                <div class="comment-content">
+                                                                    <h4 class="comment-author fo-fa fo-size mt-4 ml-4"
+                                                                        style="border: 2px solid #eee; padding: 10px; background-color: #eee;">
+                                                                        {{ comment.name|default:comment.email }}
+                                                                        <i class="bi bi-calendar4-week ml-9"></i>
+                                                                        <span class="comment-date ml-1">{{ comment.create_date|date:"F j, Y " }}</span>
+                                                                    </h4>
+
+                                                                    <p class="fo-fa ml-5 fo-size"><i
+                                                                            class="bi bi-chat-dots mr-3  font-size-lg"></i>{{ comment.text }}
+                                                                    </p>
+                                                                </div>
+
+
+                                                            </div>
+
+                                                            {% if comment.admin_answer %}
+                                                                <div class="mt-4 ml-5"
+                                                                     style="border: 2px solid #DCDCDC">
+
+
+                                                                    <div class="comment-content">
+                                                                        <h4 class="comment-author fo-fa fo-size mt-0"
+                                                                            style="border: 2px solid #eee; padding: 10px; background-color: #eee;">
+                                                                            تیم پشتیبانی سایت
+
+                                                                            <span class="comment-date ml-1">({{ comment.admin_answer_create_date|date:"F j, Y " }}) :</span>
+                                                                        </h4>
+
+                                                                        <p class="fo-fa ml-5 mb-4 mt-2"><i
+                                                                                class="bi bi-arrow-down-left-square mr-2 fo-size"></i>{{ comment.admin_answer }}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+
+                                                        </li>
+
+                                                    {% endfor %}
+
+                                                </ul>
+
+
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane" id="helpful-positive">
+                                                <ul class="comments list-style-none">
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <figure class="comment-avatar">
+                                                                <img src="/static/assets/images/demos/demo-rtl/agents/1-100x100.png"
+                                                                     alt="Commenter Avatar" width="90" height="90">
+                                                            </figure>
+                                                            <div class="comment-content">
+                                                                <h4 class="comment-author">
+                                                                    <a href="#">John Doe</a>
+                                                                    <span class="comment-date">March 22, 2021 at
+                                                                            1:54 pm</span>
+                                                                </h4>
+                                                                <div class="ratings-container comment-rating">
+                                                                    <div class="ratings-full">
+                                                                            <span class="ratings"
+                                                                                  style="width: 60%;"></span>
+                                                                        <span
+                                                                                class="tooltiptext tooltip-top"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <p>pellentesque habitant morbi tristique senectus
+                                                                    et. In dictum non consectetur a erat.
+                                                                    Nunc ultrices eros in cursus turpis massa
+                                                                    tincidunt ante in nibh mauris cursus mattis.
+                                                                    Cras ornare arcu dui vivamus arcu felis bibendum
+                                                                    ut tristique.</p>
+                                                                <div class="comment-action">
+                                                                    <a href="#"
+                                                                       class="btn btn-secondary btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-up"></i>Helpful (1)
+                                                                    </a>
+                                                                    <a href="#"
+                                                                       class="btn btn-dark btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-down"></i>Unhelpful
+                                                                        (0)
+                                                                    </a>
+                                                                    <div class="review-image">
+                                                                        <a href="#">
+                                                                            <figure>
+                                                                                <img src="/static/assets/images/products/default/review-img-1.jpg"
+                                                                                     width="60" height="60"
+                                                                                     alt="Attachment image of John Doe's review on Electronics Black Wrist Watch"
+                                                                                     data-zoom-image="/static/assets/images/products/default/review-img-1.jpg"/>
+                                                                            </figure>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <figure class="comment-avatar">
+                                                                <img src="/static/assets/images/demos/demo-rtl/agents/2-100x100.png"
+                                                                     alt="Commenter Avatar" width="90" height="90">
+                                                            </figure>
+                                                            <div class="comment-content">
+                                                                <h4 class="comment-author">
+                                                                    <a href="#">John Doe</a>
+                                                                    <span class="comment-date">March 22, 2021 at
+                                                                            1:52 pm</span>
+                                                                </h4>
+                                                                <div class="ratings-container comment-rating">
+                                                                    <div class="ratings-full">
+                                                                            <span class="ratings"
+                                                                                  style="width: 80%;"></span>
+                                                                        <span
+                                                                                class="tooltiptext tooltip-top"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <p>Nullam a magna porttitor, dictum risus nec,
+                                                                    faucibus sapien.
+                                                                    Ultrices eros in cursus turpis massa tincidunt
+                                                                    ante in nibh mauris cursus mattis.
+                                                                    Cras ornare arcu dui vivamus arcu felis bibendum
+                                                                    ut tristique.</p>
+                                                                <div class="comment-action">
+                                                                    <a href="#"
+                                                                       class="btn btn-secondary btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-up"></i>Helpful (1)
+                                                                    </a>
+                                                                    <a href="#"
+                                                                       class="btn btn-dark btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-down"></i>Unhelpful
+                                                                        (0)
+                                                                    </a>
+                                                                    <div class="review-image">
+                                                                        <a href="#">
+                                                                            <figure>
+                                                                                <img src="/static/assets/images/products/default/review-img-2.jpg"
+                                                                                     width="60" height="60"
+                                                                                     alt="Attachment image of John Doe's review on Electronics Black Wrist Watch"
+                                                                                     data-zoom-image="/static/assets/images/products/default/review-img-2-800x900.jpg"/>
+                                                                            </figure>
+                                                                        </a>
+                                                                        <a href="#">
+                                                                            <figure>
+                                                                                <img src="/static/assets/images/products/default/review-img-3.jpg"
+                                                                                     width="60" height="60"
+                                                                                     alt="Attachment image of John Doe's review on Electronics Black Wrist Watch"
+                                                                                     data-zoom-image="/static/assets/images/products/default/review-img-3-800x900.jpg"/>
+                                                                            </figure>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane" id="helpful-negative">
+                                                <ul class="comments list-style-none">
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <figure class="comment-avatar">
+                                                                <img src="/static/assets/images/demos/demo-rtl/agents/3-100x100.png"
+                                                                     alt="Commenter Avatar" width="90" height="90">
+                                                            </figure>
+                                                            <div class="comment-content">
+                                                                <h4 class="comment-author">
+                                                                    <a href="#">John Doe</a>
+                                                                    <span class="comment-date">March 22, 2021 at
+                                                                            1:21 pm</span>
+                                                                </h4>
+                                                                <div class="ratings-container comment-rating">
+                                                                    <div class="ratings-full">
+                                                                            <span class="ratings"
+                                                                                  style="width: 60%;"></span>
+                                                                        <span
+                                                                                class="tooltiptext tooltip-top"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <p>In fermentum et sollicitudin ac orci phasellus. A
+                                                                    condimentum vitae
+                                                                    sapien pellentesque habitant morbi tristique
+                                                                    senectus et. In dictum
+                                                                    non consectetur a erat. Nunc scelerisque viverra
+                                                                    mauris in aliquam sem fringilla.</p>
+                                                                <div class="comment-action">
+                                                                    <a href="#"
+                                                                       class="btn btn-secondary btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-up"></i>Helpful (0)
+                                                                    </a>
+                                                                    <a href="#"
+                                                                       class="btn btn-dark btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-down"></i>Unhelpful
+                                                                        (1)
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane" id="highest-rating">
+                                                <ul class="comments list-style-none">
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <figure class="comment-avatar">
+                                                                <img src="/static/assets/images/demos/demo-rtl/agents/2-100x100.png"
+                                                                     alt="Commenter Avatar" width="90" height="90">
+                                                            </figure>
+                                                            <div class="comment-content">
+                                                                <h4 class="comment-author">
+                                                                    <a href="#">John Doe</a>
+                                                                    <span class="comment-date">March 22, 2021 at
+                                                                            1:52 pm</span>
+                                                                </h4>
+                                                                <div class="ratings-container comment-rating">
+                                                                    <div class="ratings-full">
+                                                                            <span class="ratings"
+                                                                                  style="width: 80%;"></span>
+                                                                        <span
+                                                                                class="tooltiptext tooltip-top"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <p>Nullam a magna porttitor, dictum risus nec,
+                                                                    faucibus sapien.
+                                                                    Ultrices eros in cursus turpis massa tincidunt
+                                                                    ante in nibh mauris cursus mattis.
+                                                                    Cras ornare arcu dui vivamus arcu felis bibendum
+                                                                    ut tristique.</p>
+                                                                <div class="comment-action">
+                                                                    <a href="#"
+                                                                       class="btn btn-secondary btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-up"></i>Helpful (1)
+                                                                    </a>
+                                                                    <a href="#"
+                                                                       class="btn btn-dark btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-down"></i>Unhelpful
+                                                                        (0)
+                                                                    </a>
+                                                                    <div class="review-image">
+                                                                        <a href="#">
+                                                                            <figure>
+                                                                                <img src="/static/assets/images/products/default/review-img-2.jpg"
+                                                                                     width="60" height="60"
+                                                                                     alt="Attachment image of John Doe's review on Electronics Black Wrist Watch"
+                                                                                     data-zoom-image="/static/assets/images/products/default/review-img-2-800x900.jpg"/>
+                                                                            </figure>
+                                                                        </a>
+                                                                        <a href="#">
+                                                                            <figure>
+                                                                                <img src="/static/assets/images/products/default/review-img-3.jpg"
+                                                                                     width="60" height="60"
+                                                                                     alt="Attachment image of John Doe's review on Electronics Black Wrist Watch"
+                                                                                     data-zoom-image="/static/assets/images/products/default/review-img-3-800x900.jpg"/>
+                                                                            </figure>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane" id="lowest-rating">
+                                                <ul class="comments list-style-none">
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <figure class="comment-avatar">
+                                                                <img src="/static/assets/images/demos/demo-rtl/agents/1-100x100.png"
+                                                                     alt="Commenter Avatar" width="90" height="90">
+                                                            </figure>
+                                                            <div class="comment-content">
+                                                                <h4 class="comment-author">
+                                                                    <a href="#">John Doe</a>
+                                                                    <span class="comment-date">March 22, 2021 at
+                                                                            1:54 pm</span>
+                                                                </h4>
+                                                                <div class="ratings-container comment-rating">
+                                                                    <div class="ratings-full">
+                                                                            <span class="ratings"
+                                                                                  style="width: 60%;"></span>
+                                                                        <span
+                                                                                class="tooltiptext tooltip-top"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <p>pellentesque habitant morbi tristique senectus
+                                                                    et. In dictum non consectetur a erat.
+                                                                    Nunc ultrices eros in cursus turpis massa
+                                                                    tincidunt ante in nibh mauris cursus mattis.
+                                                                    Cras ornare arcu dui vivamus arcu felis bibendum
+                                                                    ut tristique.</p>
+                                                                <div class="comment-action">
+                                                                    <a href="#"
+                                                                       class="btn btn-secondary btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-up"></i>Helpful (1)
+                                                                    </a>
+                                                                    <a href="#"
+                                                                       class="btn btn-dark btn-link btn-underline sm btn-icon-left font-weight-normal text-capitalize">
+                                                                        <i class="far fa-thumbs-down"></i>Unhelpful
+                                                                        (0)
+                                                                    </a>
+                                                                    <div class="review-image">
+                                                                        <a href="#">
+                                                                            <figure>
+                                                                                <img src="/static/assets/images/products/default/review-img-3.jpg"
+                                                                                     width="60" height="60"
+                                                                                     alt="Attachment image of John Doe's review on Electronics Black Wrist Watch"
+                                                                                     data-zoom-image="/static/assets/images/products/default/review-img-3-800x900.jpg"/>
+                                                                            </figure>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <section class="vendor-product-section">
+                            <div class="title-link-wrapper mb-4">
+                                <h4 class="title text-left fo-fa">آخرین قالب‌ها و ایفکت‌ها</h4>
+                                <a href="{% url 'product-list' %}"
+                                   class="btn btn-dark btn-link btn-slide-right btn-icon-right">مشاهده همه<i
+                                        class="w-icon-long-arrow-left"></i></a>
+                            </div>
+                            <div class="swiper-container swiper-theme" data-swiper-options="{
+                                    'spaceBetween': 20,
+                                    'slidesPerView': 2,
+                                    'breakpoints': {
+                                        '576': {
+                                            'slidesPerView': 3
+                                        },
+                                        '768': {
+                                            'slidesPerView': 4
+                                        },
+                                        '992': {
+                                            'slidesPerView': 3
+                                        }
+                                    }
+                                }">
+                                <div class="swiper-wrapper row cols-lg-3 cols-md-4 cols-sm-3 cols-2">
+
+                                    {% for group in latest_products %}
+                                        {% for product in group %}
+                                            <div class="swiper-slide product">
+                                                <figure class="product-media product-media3">
+                                                    <div href="{% url 'product-detail' product.slug %}">
+
+                                                        <img src="{{ product.image.url }}" alt="Product"/>
+
+                                                        <div class="product-action-vertical" style="position-top:0">
+
+
+                                                            <form action="{% url 'product-order' %}" method="post">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" value="{{ product.id }}"
+                                                                       name="product_order_id">
+                                                                <button type="submit" style="padding-top: 5px"
+                                                                        class="btn-product-icon add-cart">
+                                                                    {% if is_order %}
+                                                                        <i class="bi bi-cart-dash"
+                                                                           style="font-size: 18px;  color: #336699; "></i>
+                                                                    {% else %}
+                                                                        <i class="bi bi-cart-plus-fill"
+                                                                           style="font-size: 18px; "></i>
+                                                                    {% endif %}
+                                                                </button>
+
+                                                            </form>
+
+
+                                                            <form action="{% url 'product-favorite' %}" method="post">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" value="{{ product.id }}"
+                                                                       name="product_fav_id">
+                                                                <button type="submit" style="padding-top: 5px"
+                                                                        class="btn-product-icon">
+                                                                    {% if is_favorite %}
+                                                                        حذف<i class="bi bi-suit-heart-fill"
+                                                                              style="font-size: 18px;  color: #336699; "></i>
+                                                                    {% else %}
+                                                                        افزودن<i class="bi bi-suit-heart"
+                                                                                 style="font-size: 18px; "></i>
+                                                                    {% endif %}
+                                                                </button>
+
+                                                            </form>
+
+                                                        </div>
+                                                        {% if product.discount %}
+                                                            <div class="product-label-group">
+                                                                <label class="product-label label-discount fo-fa">{{ product.discount }}
+                                                                    % تخفیف</label>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </figure>
+                                                <div class="product-details">
+                                                    <h4 class="product-name fo-fa list-title"><a
+                                                            href="{% url 'product-detail' product.slug %}">{{ product.title }}</a>
+                                                    </h4>
+                                                    <div class="ratings-container"><a
+                                                            href="{% url 'product-detail' product.slug %}"
+                                                            class="rating-reviews">
+                                                        <div class="ratings-full">
+                                                            <span class="ratings"
+                                                                  style="width: {{ product.average_rating|floatformat:"0" }}%;"></span>
+                                                            <span class="tooltiptext tooltip-top"></span>
+                                                        </div>
+                                                        <a class="rating-reviews fo-fa"> (از {{ product.number_rating }}
+                                                            رای)</a>
+                                                    </a>
+                                                    </div>
+                                                    <div class="product-price">
+                                                        {% if product.is_free %}
+                                                            <span class="new-price fo-fa list-price ">&nbsp رایگان</span>
+                                                        {% else %}
+                                                            {% if product.discount %}
+                                                                <ins class="new-price letter-spc fo-fa list-price"
+                                                                     style="text-decoration: line-through">{{ product.price | three_digits_currency }}</ins>
+                                                                <ins class="new-price letter-spc fo-fa list-price">{{ product.new_price | three_digits_currency }}</ins>
+                                                                <span class="new-price fo-fa list-price font-size-sm">&nbsp تومان</span>
+                                                            {% else %}
+                                                                <ins class="new-price letter-spc fo-fa list-price">{{ product.price | three_digits_currency }}</ins>
+                                                                <span class="new-price fo-fa list-price font-size-sm">&nbsp تومان</span>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% endfor %}
+                                    {% endfor %}
+
+
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                    <!-- End of Main Content -->
+                    <aside class="sidebar product-sidebar sidebar-fixed right-sidebar sticky-sidebar-wrapper">
+                        <div class="sidebar-overlay"></div>
+                        <a class="sidebar-close" href="#"><i class="close-icon"></i></a>
+                        <a href="#" class="sidebar-toggle d-flex d-lg-none"><i class="fas fa-chevron-right"></i></a>
+                        <div class="sidebar-content scrollable">
+                            <div class="sticky-sidebar">
+                                <div class="widget widget-icon-box mb-6">
+                                    <div class="icon-box icon-box-side">
+                                            <span class="icon-box-icon text-dark">
+                                                <i class="w-icon-truck"></i>
+                                            </span>
+                                        <div class="icon-box-content">
+                                            <h4 class="icon-box-title">Free Shipping & Returns</h4>
+                                            <p>For all orders over $99</p>
+                                        </div>
+                                    </div>
+                                    <div class="icon-box icon-box-side">
+                                            <span class="icon-box-icon text-dark">
+                                                <i class="w-icon-bag"></i>
+                                            </span>
+                                        <div class="icon-box-content">
+                                            <h4 class="icon-box-title">Secure Payment</h4>
+                                            <p>We ensure secure payment</p>
+                                        </div>
+                                    </div>
+                                    <div class="icon-box icon-box-side">
+                                            <span class="icon-box-icon text-dark">
+                                                <i class="w-icon-money"></i>
+                                            </span>
+                                        <div class="icon-box-content">
+                                            <h4 class="icon-box-title fo-fa font-size-sm">ضمانت بازگشت وجه</h4>
+                                            <p class="fo-fa font-size-sm">در بازه زمانی 3 ماهه پس از خرید</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End of Widget Icon Box -->
+
+                                <!-- End of Widget Banner -->
+
+                                <div class="widget widget-products">
+                                    <div class="title-link-wrapper mb-2">
+                                        <h4 class="title title-link font-weight-bold fo-fa">سایر قالب‌های ویژه</h4>
+                                    </div>
+
+                                    <div class="swiper nav-top">
+                                        <div class="swiper-container swiper-theme nav-top" data-swiper-options="{
+                                                'slidesPerView': 1,
+                                                'spaceBetween': 20,
+                                                'navigation': {
+                                                    'prevEl': '.swiper-button-prev',
+                                                    'nextEl': '.swiper-button-next'
+                                                }
+                                            }">
+                                            <div class="swiper-wrapper">
+                                                {% for group in special_products|slice:"3" %}
+                                                    <div class="swiper-slide product-widget-wrap">
+                                                        {% for product in group %}
+                                                            <div class="product product-widget">
+                                                                <figure class="product-media">
+                                                                    <a href="{% url 'product-detail' slug=product.slug %}">
+                                                                        <img src="{{ product.image.url }}"
+                                                                             alt="{{ product.title }}" width="105"
+                                                                             height="118" class="special-list-img"
+                                                                             style="width: 105px; height: 90px"/>
+                                                                    </a>
+                                                                </figure>
+                                                                <div class="product-details">
+                                                                    <h4 class="product-name fo-fa font-size-sm">
+                                                                        <a href="{% url 'product-detail' slug=product.slug %}">{{ product.title }}</a>
+                                                                    </h4>
+                                                                    <div class="ratings-container">
+                                                                        <div class="ratings-full">
+                                                                            <span class="ratings"
+                                                                                  style="width: {{ product.average_rating|floatformat:"0" }}%;"></span>
+                                                                            <span class="tooltiptext tooltip-top"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="product-price">
+                                                                        <ins class="new-price letter-spc fo-fa list-price">{{ product.price | three_digits_currency }}</ins>
+                                                                        <span class="new-price fo-fa list-price font-size-sm">&nbsp تومان</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <button class="swiper-button-next"></button>
+                                            <button class="swiper-button-prev"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    <!-- End of Sidebar -->
+                </div>
+            </div>
+        </div>
+        <!-- End of Page Content -->
+    </main>
+    <!-- End of Main -->
+{% endblock %}
+
+
+
+
+

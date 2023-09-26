@@ -1,0 +1,206 @@
+{% extends 'shared/_layout.html' %}
+
+{% block title %}علاقه مندی ها{% endblock %}
+
+{% block header %}
+    <header class="header">
+        <div class="header-middle">
+            <div class="container">
+                <div class="header-left mr-md-4">
+                    <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
+                    </a>
+                    <a href="demo-rtl.html" class="logo ml-lg-0">
+                        <img src="/static/assets/images/11112-transformed.png" alt="logo" width="190" height="55"/>
+                    </a>
+                    <form method="get" action="{% url 'search-result' %}"
+                          class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+                        <div class="search-border"></div>
+                        {{ search_form.query }}
+                        <button class="btn btn-search" type="submit"><i class="w-icon-search"></i></button>
+                    </form>
+                </div>
+                <div class="header-right ml-4">
+                </div> {% if user.is_authenticated %}
+                <a class="wishlist label-down link d-xs-show" href="{% url 'my_account' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">مشاهده حساب کاربری</span>
+                </a> {% else %} <a class="wishlist label-down link d-xs-show" href="{% url 'login_page' %}">
+                    <i class="w-icon-account font-size-lg mb-1"></i>
+                    <span class="wishlist-label d-lg-show fo-fa">ورود به حساب کاربری</span>
+                </a> {% endif %} <a class="wishlist label-down link d-xs-show wish-count-main"
+                                    href="{% url 'my-favorites' %}">
+                <i class="w-icon-heart font-size-lg mb-1">
+                    <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_favorites|length }}</span>
+                </i>
+                <span class="wishlist-label d-lg-show fo-fa">علاقه‌مندی‌ها</span>
+            </a>
+                <a class="wishlist label-down link d-xs-show wish-count-main" href="{% url 'my-orders' %}">
+                    <i class="w-icon-cart font-size-lg mb-1 cart-count-icon">
+                        <span class="cart-count wish-count fo-fa text-white">{{ request.session.product_orders|length }}</span>
+                    </i>
+                    <span class="wishlist-label d-lg-show fo-fa">سبد خرید</span>
+                </a>
+            </div>
+        </div>
+        </div>
+        </div>
+        <!-- End of Header Middle -->
+        <div class="header-bottom sticky-content fix-top sticky-header">
+            <div class="container" style="border-bottom: 1px solid #eee; margin-bottom: 20px">
+                <div class="inner-wrap">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown has-border" data-visible="true">
+                            <a href="#" class="category-toggle" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true" data-display="static"
+                               title="Browse Categories">
+                                <span>دسته‌بندی قالب‌ها</span>
+                            </a>
+                            <div class="dropdown-box">
+                                <ul class="menu vertical-menu category-menu"> {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product-categories-list' category.url_title %}">
+                                            <i class="{{ category.icon }}"
+                                               style='font-size:14.5px'></i>{{ category.title }}
+                                        </a>
+                                    </li> {% endfor %}
+                                    <li>
+                                        <a href="{% url 'product-list' %}"
+                                           class="font-weight-bold text-primary text-uppercase ls-25 ml-1 pt-3 pb-1">
+                                            مشاهده همه دسته‌بندی‌ها<i class="w-icon-angle-left ml-2"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <nav class="main-nav">
+                            <ul class="menu active-underline">
+                                <li class="active">
+                                    <a href="{% url 'home_page' %}">صفحه اصلی</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'product-list' %}">فروشگاه</a>
+                                </li>
+                                <li>
+                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <ul> {% for category, article_list in articles_in_article_categories %}
+                                        <li>
+                                            <a href="{% url 'article-categories-list' category.url_title %}"
+                                               class="fo-fa arti-home">{{ category.title }}</a>
+                                            <ul> {% for article in article_list %}
+                                                <li><a href="{% url 'article-detail' slug=article.slug %}"
+                                                       class="fo-fa arti-home">{{ article.title }}</a></li> {% endfor %}
+                                            </ul>
+                                        </li> {% endfor %} </ul>
+                                </li>
+                                <li>
+                                    <a href="#">خدمات طراحی سایت</a>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">سفارشی‌سازی Front End سایت</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="fo-fa arti-home">پیاده‌سازی Back End سایت</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">صفحات</a>
+                                    <ul>
+                                        <li><a href="#" class="fo-fa arti-home">سوالی دارید؟ تماس با ما</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درخواست پشتیبانی</a></li>
+                                        <li><a href="#" class="fo-fa arti-home">درباره ما (داستان ما رو دنبال کن!)</a>
+                                        </li>
+                                        <li><a href="#" class="fo-fa arti-home">قوانین و شرایط سایت</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% url "register_page" %}">ایجاد حساب کاربری </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-5 mb-5" style="max-width: 90%">
+        <div class="row">
+            <h1 class="fo-fa tit-fav">لیست قالب‌های محبوب من</h1>
+
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5 bord-list-fav">
+        <div class="container mt-5 mb-5 " style="max-width: 100%">
+            <div class="row justify-content-center">
+                {% for product in favorite_products %}
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="product-wrap">
+                            <div class="product text-center">
+                                <figure class="product-media product-media2">
+                                    <a href="{% url 'product-detail' slug=product.slug %}">
+                                        {#                            <img src="{{ product.image.url }}" class="img-thumbnail" alt="{{ product.title }}">#}
+                                        <img src="{{ product.image.url }}" alt="{{ product.title }}"/>
+                                    </a>
+                                    <div class="product-action-horizontal">
+                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart"
+                                           title="Add to cart"></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                           title="Wishlist"></a>
+                                        <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                           title="Compare"></a>
+                                        <a href="#" class="btn-product-icon btn-quickview w-icon-search"
+                                           title="Quick View"></a>
+                                    </div>
+                                    <!-- Product actions go here (e.g., add to cart, wishlist, etc.) -->
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        {% for usage in product.usage.all %}
+                                            <a href="demo-rtl-shop.html" class="fo-fa">{{ usage.title_usage }}</a>
+                                        {% endfor %}
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="{% url 'product-detail' slug=product.slug %}"
+                                           class="fo-fa list-title">{{ product.title }}</a>
+                                    </h3>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <!-- Ratings and reviews go here -->
+                                        </div>
+                                        <!-- Rating and review link go here -->
+                                    </div>
+                                    <div class="product-pa-wrapper">
+                                        <div class="product-price fo-fa list-price">
+                                            {{ product.price }}&nbsp;تومان
+                                        </div>
+                                    </div>
+                                    <form action="{% url 'product-favorite' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ product.id }}" name="product_fav_id">
+                                        <button type="submit">Remove from Favorites</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+
+{% endblock %}
+
+
+{% block footer %} {% endblock %}
+
+{% block sticky %} {% endblock %}
+
+

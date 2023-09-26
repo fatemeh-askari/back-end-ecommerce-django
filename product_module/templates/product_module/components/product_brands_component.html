@@ -1,0 +1,12 @@
+<h3 class="widget-title fo-fa"><label>طبقه‌بندی موضوعی</label></h3>
+    <ul class="widget-body filter-items search-ul mt-1">
+        {% for brand in brands %}
+        <li class="mb-3 mt-1">
+
+            <a href="{% url 'product-brands-list' brand.url_title %}" style="display: inline">
+                <i class="{{ brand.icon_brand }}" id="icon-b"></i>
+                {{ brand.title }}  <a href="{% url 'product-brands-list' brand.url_title %}" style="display: inline; font-size: 12px">({{ brand.products_count }})</a></a>
+        </li>
+
+        {% endfor %}
+

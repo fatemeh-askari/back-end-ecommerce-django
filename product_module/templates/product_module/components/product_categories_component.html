@@ -1,0 +1,6 @@
+<h3 class="widget-title fo-fa"><label>دسته‌بندی قالب‌ها</label></h3>
+    <ul class="widget-body filter-items search-ul">
+        {% for category in categories %}
+            <li><a href="{% url 'product-categories-list' category.url_title %}">{{ category.title }}</a></li>
+        {% endfor %}
+    </ul>

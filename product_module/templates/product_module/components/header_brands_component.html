@@ -1,0 +1,23 @@
+{% for brand in brands %}
+    {% if brand.is_in_header %}
+
+
+<div class="swiper-slide category-wrap">
+<div class="category category-ellipse">
+    <figure class="category-media">
+                <a href="{% url 'product-brands-list' brand.url_title %}">
+                    <img src="{{ brand.image.url }}" alt="Category" class="imgbrand" style="width: 140px; height: 135px"/>
+                </a>
+
+    </figure>
+    <div class="category-content">
+
+                <h4 class="category-name mt-4 fo-fa">
+                    <a href="{% url 'product-brands-list' brand.url_title %}">{{ brand.title }}</a>
+                </h4>
+
+    </div>
+</div>
+</div>
+{% endif %}
+        {% endfor %}

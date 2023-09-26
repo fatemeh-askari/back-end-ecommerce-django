@@ -1,0 +1,37 @@
+{% load poll_extras %}
+
+<div class="product-list-container">
+    <div class="product-wrap">
+        <div class="product text-center">
+            <figure class="product-media product-media2">
+                <a href="{% url 'article-detail' slug=article.slug %}">
+                    <img src="{{ article.image.url }}" alt="Product"/>
+                </a>
+                <div class="product-action-horizontal">
+                    <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to cart"></a>
+                    <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
+                    <a href="#" class="btn-product-icon btn-compare w-icon-compare" title="Compare"></a>
+                    <a href="#" class="btn-product-icon btn-quickview w-icon-search" title="Quick View"></a>
+                </div>
+            </figure>
+            <div class="product-details mb-5">
+                <div class="product-cat">
+                    {% for usage in product.usage.all %}
+                        <a href="demo-rtl-shop.html" class="fo-fa">{{ usage.title_usage }}</a>
+                    {% endfor %}
+                </div>
+                <h3 class="product-name">
+                    <a href="{% url 'article-detail' slug=article.slug %}"
+                       class="fo-fa list-title">{{ article.title }}</a>
+                </h3>
+                <div class="ratings-container">
+                    <div class="ratings-full">
+                        <span class="ratings" style="width: 100%;"></span>
+                        <span class="tooltiptext tooltip-top"></span>
+                    </div>
+                    <a href="demo-rtl-product.html" class="rating-reviews">(3 reviews)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

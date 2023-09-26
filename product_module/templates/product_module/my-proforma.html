@@ -1,0 +1,139 @@
+{% extends 'shared/_layout.html' %}
+
+{% block header %} {% endblock %}
+
+{% block content %}
+
+    <br>  <br>
+    <div class="container text-center mt-9 mb-9">
+        <div class="row">
+            <div class="col-md-5 final-right">
+
+                <div class="col mb-6">
+                    <div class="ecommerce-address shipping-address pr-lg-8">
+                        <h4 class="title title-underline ls-25 font-weight-bold fo-fa">مشاهده جزئیات سفارش</h4>
+                        <address class="mb-4">
+                            <table class="address-table final-table">
+                                <tbody>
+                                <tr>
+                                    <th>نام کاربری:</th>
+                                    <td>{{ proforma.user.username }}</td>
+                                </tr>
+                                <tr>
+                                    <th>آدرس ایمیل:</th>
+                                    <td>{{ proforma.user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>تاریخ ایجاد سفارش:</th>
+                                    <td>{{ proforma.create_date }}</td>
+                                </tr>
+                                <tr>
+                                    <th>تعداد کل اقلام موجود:</th>
+                                    <td>{{ request.session.product_orders|length }}</td>
+                                </tr>
+                                <tr>
+                                    <th>قیمت نهایی سبد خرید:</th>
+                                    <td>{{ proforma.total_price }} تومان</td>
+                                </tr>
+                                <tr>
+                                    <th>شناسه سفارش:</th>
+                                    <td>{{ proforma.id }}Pfo</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </address>
+                        <a href="{% url 'my_account' %}"
+                           class="btn btn-link btn-underline btn-icon-right text-primary edit-final">
+                            ویرایش اطلاعات حساب کاربری<i class="w-icon-long-arrow-left mr-1 "></i></a>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-7">
+                <div class="container text-center mt-5">
+                    <div class="row">
+                        <div class="col-3 header-final">
+                            شناسه محصول
+                        </div>
+                        <div class="col-6 header-final">
+                            نام قالب و ایفکت
+                        </div>
+                        <div class="col-3 header-final border-final">
+                            قیمت
+                        </div>
+                    </div>
+
+                    {% for product in proforma.products.all %}
+                        <div class="row">
+
+
+                            <div class="col-3 header-final2">
+                                <a href="{% url 'product-detail' slug=product.slug %}"
+                                   class="hover-final">{{ proforma.id }}tmsa </a>
+                            </div>
+
+
+                            <div class="col-6 header-final2">
+                                <a href="{% url 'product-detail' slug=product.slug %}"
+                                   class="hover-final">{{ product.title }}</a>
+                            </div>
+
+
+                            <div class="col-3 header-final2 border-final">
+                                {{ product.price }} تومان
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                    <div class="row">
+                        <div class="col-3 header-final3">
+                            قیمت کل
+                        </div>
+                        <div class="col-9 header-final3">
+                            {{ proforma.total_price }} تومان
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12 header-final3">
+
+                            <div class="payment__methods">
+                                <h5 class="checkout__tltle payment__title fo-fa">انتخاب درگاه پرداخت</h5>
+
+                                <div class="payment__option flex">
+                                    <input type="radio" name="radio" checked class="payment__input">
+                                    <label for="" class="payment__label">درگاه به پرداخت ملت</label>
+                                </div>
+
+                                <div class="payment__option flex">
+                                    <input type="radio" name="radio" checked class="payment__input">
+                                    <label for="" class="payment__label">درگاه پرداخت زرین پال</label>
+                                </div>
+
+                                <div class="payment__option flex">
+                                    <input type="radio" name="radio" checked class="payment__input">
+                                    <label for="" class="payment__label">درگاه پرداخت الکترونیکی زیبال</label>
+                                </div>
+
+                            </div>
+
+                            <button class="btn btn--md action-order action-payment">هدایت به صفحه پرداخت</button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br>  <br>  <br>
+
+
+{% endblock %}
+
+
