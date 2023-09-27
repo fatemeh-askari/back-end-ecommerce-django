@@ -127,74 +127,131 @@
 
 {% block content %}
 
-    <div class="container mt-5 mb-5" style="max-width: 90%">
+        <div class="container mt-5 mb-5" style="max-width: 90%">
         <div class="row">
-            <h1 class="fo-fa tit-fav">لیست قالب‌های محبوب من</h1>
+            <h1 class="fo-fa tit-fav">لیست علاقه‌مندی‌های من</h1>
 
         </div>
     </div>
 
-    <div class="container mt-5 mb-5 bord-list-fav">
-        <div class="container mt-5 mb-5 " style="max-width: 100%">
-            <div class="row justify-content-center">
-                {% for product in favorite_products %}
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <div class="product-wrap">
-                            <div class="product text-center">
-                                <figure class="product-media product-media2">
-                                    <a href="{% url 'product-detail' slug=product.slug %}">
+
+
+    <div class="table__container">
+        <table class="table">
+            <tr>
+                <th>تصویر قالب</th>
+                <th>نام قالب</th>
+                <th>قیمت</th>
+                <th>حذف از علاقه‌مندی‌ها</th>
+            </tr>
+
+            {% for product in favorite_products %}
+
+                <tr>
+                    <td>
+                        <a href="{% url 'product-detail' slug=product.slug %}">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="table__img">
+                        </a>
+
+                    </td>
+
+                    <td>
+                        <a href="{% url 'product-detail' slug=product.slug %}">
+                            <h3 class="table__title">{{ product.title }}</h3>
+                        </a>
+                    </td>
+
+                    <td>
+                        <span class="table__price product-price fo-fa list-price">{{ product.price }}&nbsp;تومان</span>
+                    </td>
+
+
+                    <td>
+                        <form action="{% url 'product-favorite' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ product.id }}" name="product_favorite_id">
+                            <button type="submit" class="remove-order"><i class="bi bi-trash3"></i></button>
+                        </form>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+
+        </table>
+    </div>
+
+
+
+
+{#    <div class="container mt-5 mb-5" style="max-width: 90%">#}
+{#        <div class="row">#}
+{#            <h1 class="fo-fa tit-fav">لیست قالب‌های محبوب من</h1>#}
+{##}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="container mt-5 mb-5 bord-list-fav">#}
+{#        <div class="container mt-5 mb-5 " style="max-width: 100%">#}
+{#            <div class="row justify-content-center">#}
+{#                {% for product in favorite_products %}#}
+{#                    <div class="col-sm-6 col-md-4 col-lg-3">#}
+{#                        <div class="product-wrap">#}
+{#                            <div class="product text-center">#}
+{#                                <figure class="product-media product-media2">#}
+{#                                    <a href="{% url 'product-detail' slug=product.slug %}">#}
                                         {#                            <img src="{{ product.image.url }}" class="img-thumbnail" alt="{{ product.title }}">#}
-                                        <img src="{{ product.image.url }}" alt="{{ product.title }}"/>
-                                    </a>
-                                    <div class="product-action-horizontal">
-                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart"
-                                           title="Add to cart"></a>
-                                        <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                           title="Wishlist"></a>
-                                        <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                           title="Compare"></a>
-                                        <a href="#" class="btn-product-icon btn-quickview w-icon-search"
-                                           title="Quick View"></a>
-                                    </div>
-                                    <!-- Product actions go here (e.g., add to cart, wishlist, etc.) -->
-                                </figure>
-                                <div class="product-details">
-                                    <div class="product-cat">
-                                        {% for usage in product.usage.all %}
-                                            <a href="demo-rtl-shop.html" class="fo-fa">{{ usage.title_usage }}</a>
-                                        {% endfor %}
-                                    </div>
-                                    <h3 class="product-name">
-                                        <a href="{% url 'product-detail' slug=product.slug %}"
-                                           class="fo-fa list-title">{{ product.title }}</a>
-                                    </h3>
-                                    <div class="ratings-container">
-                                        <div class="ratings-full">
-                                            <!-- Ratings and reviews go here -->
-                                        </div>
-                                        <!-- Rating and review link go here -->
-                                    </div>
-                                    <div class="product-pa-wrapper">
-                                        <div class="product-price fo-fa list-price">
-                                            {{ product.price }}&nbsp;تومان
-                                        </div>
-                                    </div>
-                                    <form action="{% url 'product-favorite' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" value="{{ product.id }}" name="product_fav_id">
-                                        <button type="submit">Remove from Favorites</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-
-    </div>
+{#                                        <img src="{{ product.image.url }}" alt="{{ product.title }}"/>#}
+{#                                    </a>#}
+{#                                    <div class="product-action-horizontal">#}
+{#                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart"#}
+{#                                           title="Add to cart"></a>#}
+{#                                        <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"#}
+{#                                           title="Wishlist"></a>#}
+{#                                        <a href="#" class="btn-product-icon btn-compare w-icon-compare"#}
+{#                                           title="Compare"></a>#}
+{#                                        <a href="#" class="btn-product-icon btn-quickview w-icon-search"#}
+{#                                           title="Quick View"></a>#}
+{#                                    </div>#}
+{#                                    <!-- Product actions go here (e.g., add to cart, wishlist, etc.) -->#}
+{#                                </figure>#}
+{#                                <div class="product-details">#}
+{#                                    <div class="product-cat">#}
+{#                                        {% for usage in product.usage.all %}#}
+{#                                            <a href="demo-rtl-shop.html" class="fo-fa">{{ usage.title_usage }}</a>#}
+{#                                        {% endfor %}#}
+{#                                    </div>#}
+{#                                    <h3 class="product-name">#}
+{#                                        <a href="{% url 'product-detail' slug=product.slug %}"#}
+{#                                           class="fo-fa list-title">{{ product.title }}</a>#}
+{#                                    </h3>#}
+{#                                    <div class="ratings-container">#}
+{#                                        <div class="ratings-full">#}
+{#                                            <!-- Ratings and reviews go here -->#}
+{#                                        </div>#}
+{#                                        <!-- Rating and review link go here -->#}
+{#                                    </div>#}
+{#                                    <div class="product-pa-wrapper">#}
+{#                                        <div class="product-price fo-fa list-price">#}
+{#                                            {{ product.price }}&nbsp;تومان#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <form action="{% url 'product-favorite' %}" method="post">#}
+{#                                        {% csrf_token %}#}
+{#                                        <input type="hidden" value="{{ product.id }}" name="product_fav_id">#}
+{#                                        <button type="submit">Remove from Favorites</button>#}
+{#                                    </form>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{##}
+{#    </div>#}
 
 {% endblock %}
 

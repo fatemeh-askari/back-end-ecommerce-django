@@ -35,11 +35,11 @@
                         <h3 class="widget-title fo-fa">صفحات پرکاربرد</h3>
                         <ul class="widget-body fo-fa">
                             <li><a href="#">صفحه اصلی</a></li>
-                            <li><a href="#">لیست محصولات</a></li>
-                            <li><a href="about-us.html">داستان ما رو دنبال کن!</a></li>
+                            <li><a href="{% url 'product-list' %}">لیست محصولات</a></li>
+                            <li><a href="#">داستان ما رو دنبال کن!</a></li>
                             <li><a href="#">درخواست پشتیبانی</a></li>
                             <li><a href="#">تماس با ما</a></li>
-                            <li><a href="contact-us.html">قوانین و شرایط سایت</a></li>
+                            <li><a href="#">قوانین و شرایط سایت</a></li>
                         </ul>
                     </div>
                 </div>
@@ -47,12 +47,12 @@
                     <div class="widget fo-fa">
                         <h4 class="widget-title">مدیریت حساب کاربری</h4>
                         <ul class="widget-body">
-                            <li><a href="#">حساب کاربری من</a></li>
-                            <li><a href="#">سبد خرید من</a></li>
-                            <li><a href="cart.html">لیست علاقه‌مندی‌ها</a></li>
-                            <li><a href="login.html">ورود به حساب کاربری</a></li>
-                            <li><a href="#">ایجاد حساب کاربری</a></li>
-                            <li><a href="wishlist.html">خروج از حساب کاربری</a></li>
+                            <li><a href="{% url 'my_account' %}">حساب کاربری من</a></li>
+                            <li><a href="{% url 'my-orders' %}">سبد خرید من</a></li>
+                            <li><a href="{% url 'my-favorites' %}">لیست علاقه‌مندی‌ها</a></li>
+                            <li><a href="{% url 'logout_page' %}">ورود به حساب کاربری</a></li>
+                            <li><a href="{% url 'register_page' %}">ایجاد حساب کاربری</a></li>
+                            <li><a href="{% url 'logout_page' %}">خروج از حساب کاربری</a></li>
                         </ul>
                     </div>
                 </div>
