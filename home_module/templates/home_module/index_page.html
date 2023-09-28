@@ -82,7 +82,7 @@
                                     <a href="{% url 'product-list' %}">فروشگاه</a>
                                 </li>
                                 <li>
-                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <a href="{% url 'article-list' %}">مقالات تخصصی</a>
                                     <ul> {% for category, article_list in articles_in_article_categories %}
                                         <li>
                                             <a href="{% url 'article-categories-list' category.url_title %}"
@@ -94,24 +94,24 @@
                                         </li> {% endfor %} </ul>
                                 </li>
                                 <li>
-                                    <a href="vendor-dokan-store.html">خدمات طراحی سایت</a>
+                                    <a href="#">خدمات طراحی سایت</a>
                                     <ul>
                                         <li>
-                                            <a href="vendor-dokan-store-list.html" class="fo-fa arti-home">سفارشی‌سازی
+                                            <a href="#" class="fo-fa arti-home">سفارشی‌سازی
                                                 Front End سایت</a>
                                         </li>
                                         <li>
-                                            <a href="vendor-dokan-store.html" class="fo-fa arti-home">پیاده‌سازی Back
+                                            <a href="#" class="fo-fa arti-home">پیاده‌سازی Back
                                                 End سایت</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="about-us.html">صفحات</a>
+                                    <a href="#">صفحات</a>
                                     <ul>
-                                        <li><a href="about-us.html" class="fo-fa arti-home">سوالی دارید؟ تماس با ما</a>
+                                        <li><a href="{% url 'contact_us_page' %}" class="fo-fa arti-home">سوالی دارید؟ تماس با ما</a>
                                         </li>
-                                        <li><a href="become-a-vendor.html" class="fo-fa arti-home">درخواست پشتیبانی</a>
+                                        <li><a href="#" class="fo-fa arti-home">درخواست پشتیبانی</a>
                                         </li>
                                         <li><a href="#" class="fo-fa arti-home">درباره ما (داستان ما رو دنبال کن!)</a>
                                         </li>

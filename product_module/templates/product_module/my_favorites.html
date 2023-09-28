@@ -81,7 +81,7 @@
                                     <a href="{% url 'product-list' %}">فروشگاه</a>
                                 </li>
                                 <li>
-                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <a href="{% url 'article-list' %}">مقالات تخصصی</a>
                                     <ul> {% for category, article_list in articles_in_article_categories %}
                                         <li>
                                             <a href="{% url 'article-categories-list' category.url_title %}"

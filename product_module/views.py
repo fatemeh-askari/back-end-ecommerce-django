@@ -403,20 +403,40 @@ from django.shortcuts import render
 from .models import ProductCategory
 
 
+# class ProductSupportView(View):
+#     def get(self, request):
+#         productsupport_form = ProductSupportForm()
+#         return render(request, 'product_module/product_support.html', {
+#             'productsupport_form': productsupport_form
+#         })
+#
+#     def post(self, request):
+#         productsupport_form = ProductSupportForm(request.POST)
+#         user = self.request.user
+#         if productsupport_form.is_valid():
+#             productsupport_form.save()
+#             return redirect('home_page')
+#
+#         return render(request, 'product_module/product_support.html', {
+#             'productsupport_form': productsupport_form
+#         })
+
 class ProductSupportView(View):
     def get(self, request):
         productsupport_form = ProductSupportForm()
-        return render(request, 'product_module/product_support.html', {
-            'productsupport_form': productsupport_form
-        })
 
-    def post(self, request):
-        productsupport_form = ProductSupportForm(request.POST)
-        user = self.request.user
-        if productsupport_form.is_valid():
-            productsupport_form.save()
-            return redirect('home_page')
+        # Retrieve the categories and articles here
+        product_categories = ProductCategory.objects.filter(is_delete=False, is_active=True, is_in_listCat_homepage=True)
+        article_categories = ArticleCategory.objects.filter(is_delete=False, is_active=True)
+        articles_in_article_categories = []
+
+        for category in article_categories:
+            articles = Article.objects.filter(is_delete=False, is_active=True, category=category)[:8]
+            articles_in_article_categories.append((category, articles))
 
         return render(request, 'product_module/product_support.html', {
-            'productsupport_form': productsupport_form
+            'productsupport_form': productsupport_form,
+            'product_categories': product_categories,
+            'article_categories': article_categories,
+            'articles_in_article_categories': articles_in_article_categories
         })

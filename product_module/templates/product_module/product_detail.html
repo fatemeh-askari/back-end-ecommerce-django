@@ -83,7 +83,7 @@
                                     <a href="{% url 'product-list' %}">فروشگاه</a>
                                 </li>
                                 <li>
-                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <a href="{% url 'article-list' %}">مقالات تخصصی</a>
                                     <ul> {% for category, article_list in articles_in_article_categories %}
                                         <li>
                                             <a href="{% url 'article-categories-list' category.url_title %}"
@@ -301,10 +301,10 @@
                                                     class="btn btn-primary btn-pre mb-2">
                                                 {% if request.GET.is_order == 'True' %}
                                                     <!-- Icon for product in cart -->
-                                                    <span class="fo-fa ml-1">حذف از سبد خرید</span>
+                                                    <span class="fo-fa ml-1"><i class="bi bi-bag-dash mr-2" style="font-size: 1.8rem"></i>حذف از سبد خرید  </span>
                                                 {% else %}
                                                     <!-- Icon for product not in cart -->
-                                                    <span class="fo-fa ml-1">افزودن به سبد خرید</span>
+                                                    <span class="fo-fa ml-1"><i class="bi bi-bag-plus mr-2" style="font-size: 1.8rem"></i> افزودن به سبد خرید</span>
                                                 {% endif %}
 
                                             </button>
@@ -1003,20 +1003,20 @@
                                 <div class="widget widget-icon-box mb-6">
                                     <div class="icon-box icon-box-side">
                                             <span class="icon-box-icon text-dark">
-                                                <i class="w-icon-truck"></i>
+                                                <i class="bi bi-exclamation-diamond"></i>
                                             </span>
                                         <div class="icon-box-content">
-                                            <h4 class="icon-box-title">Free Shipping & Returns</h4>
-                                            <p>For all orders over $99</p>
+                                            <h4 class="icon-box-title fo-fa font-size-sm">بررسی قالب ها توسط تیم تخصصی</h4>
+                                            <p class="fo-fa font-size-sm">عدم وجود ایرادات امنیتی و خطا</p>
                                         </div>
                                     </div>
                                     <div class="icon-box icon-box-side">
                                             <span class="icon-box-icon text-dark">
-                                                <i class="w-icon-bag"></i>
+                                                <i class="bi bi-chat-text"></i>
                                             </span>
                                         <div class="icon-box-content">
-                                            <h4 class="icon-box-title">Secure Payment</h4>
-                                            <p>We ensure secure payment</p>
+                                            <h4 class="icon-box-title font-size-sm fo-fa">تیم پشتیبانی مشتری</h4>
+                                            <p class="fo-fa font-size-sm">تماس یا ایمیل به تیم ما 24/7</p>
                                         </div>
                                     </div>
                                     <div class="icon-box icon-box-side">

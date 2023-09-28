@@ -83,7 +83,7 @@
                                     <a href="{% url 'product-list' %}">فروشگاه</a>
                                 </li>
                                 <li>
-                                    <a href="blog.html">مقالات تخصصی</a>
+                                    <a href="{% url 'article-list' %}">مقالات تخصصی</a>
                                     <ul> {% for category, article_list in articles_in_article_categories %}
                                         <li>
                                             <a href="{% url 'article-categories-list' category.url_title %}"
@@ -136,12 +136,12 @@
     <main class="main">
         <!-- Start of Breadcrumb -->
         <nav class="breadcrumb-nav">
-            <div class="container">
-                <ul class="breadcrumb bb-no">
-                    <li><a href="demo-rtl.html">Home</a></li>
-                    <li>Shop</li>
-                </ul>
-            </div>
+{#            <div class="container">#}
+{#                <ul class="breadcrumb bb-no">#}
+{#                    <li><a href="demo-rtl.html">خانه</a></li>#}
+{#                    <li>لیست محصولات</li>#}
+{#                </ul>#}
+{#            </div>#}
         </nav>
         <!-- End of Breadcrumb -->
 
@@ -152,10 +152,9 @@
                 <div class="shop-default-banner banner d-flex align-items-center mb-5 br-xs"
                      style="background-image: url(/static/assets/images/demos/demo-rtl/shop/banner1.jpg); background-color: #FFC74E;">
                     <div class="banner-content">
-                        <h4 class="banner-subtitle font-weight-bold">Accessories Collection</h4>
-                        <h3 class="banner-title text-white text-uppercase font-weight-bolder ls-normal">Smart Wrist
-                            Watches</h3>
-                        <a href="demo-rtl-shop.html"
+                        <h4 class="banner-subtitle font-weight-bold">Responsive Templates</h4>
+                        <h3 class="banner-title text-white text-uppercase font-weight-bolder ls-normal">Parallax & 3D Templates</h3>
+                        <a href="#"
                            class="btn btn-dark btn-rounded btn-icon-right">Discover
                             Now<i class="w-icon-long-arrow-left"></i></a>
                     </div>
@@ -283,7 +282,7 @@
                             <!-- Start of Sticky Sidebar -->
                             <div class="sticky-sidebar">
                                 <div class="filter-actions">
-                                    <label>Filter :</label>
+                                    <label>فیلتر :</label>
                                     <a href="{% url 'product-list' %}" class="btn btn-dark btn-link fil-clean fo-fa">پاک
                                         کردن همه فیلترها</a>
                                 </div>
@@ -346,26 +345,26 @@
                             <div class="toolbox-left">
                                 <a href="#" class="btn btn-primary btn-outline btn-rounded left-sidebar-toggle
                                         btn-icon-left d-block d-lg-none"><i
-                                        class="w-icon-category"></i><span>Filters</span></a>
+                                        class="w-icon-category"></i><span>فیلترها</span></a>
                                 <div class="toolbox-item toolbox-sort select-box text-dark">
-                                    <label>Sort By :</label>
+                                    <label>تنظیم بر اساس :</label>
                                     <select name="orderby" class="form-control">
-                                        <option value="default" selected="selected">Default sorting</option>
-                                        <option value="popularity">Sort by popularity</option>
-                                        <option value="rating">Sort by average rating</option>
-                                        <option value="date">Sort by latest</option>
-                                        <option value="price-low">Sort by pric: low to high</option>
-                                        <option value="price-high">Sort by price: high to low</option>
+                                        <option value="default" selected="selected">حالت پیش فرض</option>
+                                        <option value="popularity">بر اساس محبوبیت</option>
+                                        <option value="rating">بر اساس امتیازات</option>
+                                        <option value="date">بر اساس آخرین ها</option>
+                                        <option value="price-low">بر اساس قیمت: کم به زیاد</option>
+                                        <option value="price-high">بر اساس قیمت: زیاد به کم</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="toolbox-right">
                                 <div class="toolbox-item toolbox-show select-box">
                                     <select name="count" class="form-control">
-                                        <option value="9">Show 9</option>
-                                        <option value="12" selected="selected">Show 12</option>
-                                        <option value="24">Show 24</option>
-                                        <option value="36">Show 36</option>
+                                        <option value="9">نمایش 9</option>
+                                        <option value="12" selected="selected">نمایش 12</option>
+                                        <option value="24">نمایش 24</option>
+                                        <option value="36">نمایش 36</option>
                                     </select>
                                 </div>
                                 <div class="toolbox-item toolbox-layout">
@@ -392,7 +391,7 @@
 
                         <div class="toolbox toolbox-pagination justify-content-between">
                             <p class="showing-info mb-2 mb-sm-0">
-                                Showing<span>1-12 of 60</span>Products
+{#                                Showing<span>1-12 of 60</span>Products#}
                             </p>
 
 
